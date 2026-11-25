@@ -72,7 +72,7 @@ Cuando tienes 30 cajas apiladas en un trastero (o a medio deshacer una mudanza),
 | Negocio | Unity IAP 5 (Google Play Billing), productos no consumibles |
 | Calidad | Firebase Crashlytics (solo fallos, sin analítica) · Unity Test Framework |
 
-Unas **13 000 líneas de C#** propias repartidas en ensamblados separados (`Runtime`, `Editor`, `Tests`).
+Código C# propio repartido en ensamblados separados (`Runtime`, `Editor`, `Tests`).
 
 ### Capas
 
