@@ -29,7 +29,7 @@ Cuando tienes 30 cajas apiladas en un trastero (o a medio deshacer una mudanza),
 
 1. **Registras la caja**: nombre, ubicación (estantería, balda, habitación de destino…), fotos y la lista de objetos que contiene.
 2. **Imprimes su etiqueta**: la app genera un PDF a tamaño real con un marcador único y la pegas en la caja.
-3. **La encuentras con la cámara**: buscas «taladro», pulsas **Localizar** y, al apuntar al trastero, la caja correcta se marca en rojo. Las demás muestran un cartel flotante con su contenido; al tocarlo se abre la ficha.
+3. **La encuentras con la cámara**: buscas «taladro», abres la caja y pulsas **Localizar**. Al apuntar al trastero, la caja correcta se marca en rojo y el resto muestra un cartel con su nombre. Al tocar un cartel sube un panel con la foto, la ubicación y el contenido, sin salir de la cámara.
 
 <div align="center">
 <img src="docs/readme/screen_home.png" width="230" alt="Pantalla de inicio con buscador y actividad reciente">
@@ -53,7 +53,7 @@ Cuando tienes 30 cajas apiladas en un trastero (o a medio deshacer una mudanza),
 | 🥽 **Localizar en AR** | Detección de hasta 200 marcadores distintos, carteles que no se solapan y la caja buscada resaltada. |
 | 💾 **Copia de seguridad** | Exporta todo (base de datos + fotos) a un ZIP y lo importa en otro móvil. |
 | 🌐 **Español e inglés** | Selector de idioma (automático / ES / EN). |
-| 🔒 **100 % offline** | Sin cuentas ni anuncios. Los datos no salen del móvil. |
+| 🔒 **100 % offline** | Sin cuentas ni anuncios. Tus cajas, objetos y fotos no salen del móvil. |
 | 💳 **Freemium** | Plan gratuito y ampliaciones de pago único a 50 y 200 cajas (Google Play Billing). |
 
 ---
@@ -65,7 +65,7 @@ Cuando tienes 30 cajas apiladas en un trastero (o a medio deshacer una mudanza),
 | Área | Tecnología |
 |---|---|
 | Motor | Unity 6 (6000.4) · URP · IL2CPP · ARM64 · Android 7.1+ (API 25) |
-| Realidad aumentada | AR Foundation 6.6 + ARCore (cámara y pose del dispositivo) · **detector fiducial propio** |
+| Realidad aumentada | AR Foundation 6.6 + ARCore (sesión, compatibilidad y acceso a la imagen de cámara) · **detector fiducial propio** |
 | Persistencia | SQLite (`sqlite-net`, modo WAL) con *fallback* automático a JSON · fotos JPEG en disco |
 | Interfaz | UI Toolkit (inicio, menús, listados) + uGUI/TextMesh Pro (ficha, edición, AR) |
 | Plataforma | NativeCamera, NativeGallery, NativeShare, NativeFilePicker |
@@ -123,25 +123,13 @@ El primer prototipo usaba el *Image Tracking* de ARCore. Con una etiqueta de 68 
 
 **Diccionario** (`FiducialDictionary`): 200 códigos de 25 bits generados por búsqueda voraz con semilla fija, con **distancia de Hamming mínima 7** entre cualquier par contando las cuatro rotaciones. Eso permite corregir hasta 2 casillas mal leídas sin confundir una caja con otra y saber hacia dónde está girada la etiqueta.
 
-**Detector** (`FiducialDetector`, ~750 líneas, C# puro sin Unity):
-
-1. **Umbral adaptativo** con imagen integral: un píxel es «oscuro» si lo es respecto a su entorno, así el anillo negro sigue cerrado aunque la luz del trastero no sea uniforme.
-2. **Componentes conexas** por tramos horizontales con *union-find*.
-3. **Envolvente convexa** de cada componente → cuadrilátero de área máxima.
-4. **Homografía** cuadrado unidad → cuadrilátero y muestreo de las 7×7 casillas.
-5. **Validación**: anillo exterior negro + código con ≤ 2 errores en alguna rotación.
-
-**Integración en tiempo real** (`ArMarkerTracker`):
-
-- Lee el plano Y (luminancia) de la imagen de cámara de ARCore **fila a fila respetando el `rowStride`** (las filas traen relleno; copiarlas de golpe daba una imagen rayada) y la limita a 1920 px.
-- La detección corre en un **hilo aparte** sin reservar memoria por fotograma; el hilo principal solo recoge resultados. Las excepciones del hilo se capturan al recoger la `Task` y se reportan.
-- Proyecta las esquinas a la pantalla, coloca carteles tocables y **resuelve solapes** entre ellos; si el marcador se pierde un momento, el cartel se queda en su última posición.
+El reconocimiento no usa el tracking de ARCore: un detector propio en C# lee cada fotograma de la cámara en un hilo aparte, identifica los marcadores y coloca encima los carteles de cada caja.
 
 **Resultado verificado en dispositivo: lectura a 5 m con luz media**, etiqueta de 60 mm con 8 mm de margen blanco.
 
-### Otras decisiones que me gustan
+### Decisiones técnicas
 
-- **PDF a tamaño real escrito a mano** (`MinimalPdf`): un PNG no lleva tamaño físico, así que cada impresora lo escalaba a su manera. Genero un PDF de una página con el JPEG incrustado a milímetros exactos, sin librerías externas.
+- **PDF a tamaño real escrito a mano** (`MinimalPdf`): un PNG no lleva tamaño físico y la app de impresión lo escala a su antojo, con lo que el marcador salía a otro tamaño. Genero un PDF de una página con el JPEG incrustado a milímetros exactos, sin librerías externas.
 - **Copia de seguridad transaccional** (`BackupService`): checkpoint del WAL antes de copiar, ZIP con manifiesto versionado, importación que descomprime en caché, filtra entradas desconocidas, **protege contra *path traversal*** (`../`), rechaza esquemas más nuevos y, si la base importada no abre, **restaura automáticamente** lo anterior.
 - **Fotos consistentes**: JPEG a 1600 px + miniatura de 256 px, la BD guarda rutas relativas (las copias funcionan en otro móvil), orientación EXIF aplicada y barrido de huérfanos al arrancar.
 - **Memoria acotada**: la galería carga a resolución completa solo la foto visible y sus vecinas; las texturas se destruyen al ocultar cada vista.
@@ -176,9 +164,9 @@ Assets/_Project/
 
 No es solo un prototipo: la app está **publicada en Google Play** y pasó por todo el proceso real de un producto.
 
-- Prueba cerrada con testers, informe previo al lanzamiento y Android vitals.
+- Prueba cerrada en Google Play con testers reales.
 - Ficha en español e inglés, política de privacidad publicada y declaración de seguridad de datos coherente con lo que hace la app.
-- Firma con Play App Signing, AAB y subida de símbolos IL2CPP para trazas legibles.
+- Firma con Play App Signing, paquete AAB y tabla de símbolos IL2CPP incluida para trazas de fallos legibles.
 - Monetización sin anuncios ni suscripciones.
 
 ## Código fuente
@@ -189,6 +177,6 @@ El código es privado porque la app está a la venta en Google Play. Puedo ense�
 
 **Rigel Chulia Ortega** · desarrollo, diseño de la interfaz, visión por computador y publicación.
 
-[LinkedIn](https://www.linkedin.com/in/TU-PERFIL) · rigelchuliawezen@gmail.com
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Rigel_Chulia_Ortega-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/rigel-chulia-ortega/) · rigelchuliawezen@gmail.com
 
 <sub>© 2026 Rigel Chulia Ortega. Todos los derechos reservados. La política de privacidad de la app se publica desde este repositorio: <a href="https://rigelchuliao.github.io/trasteroar-privacidad/">rigelchuliao.github.io/trasteroar-privacidad</a>.</sub>
