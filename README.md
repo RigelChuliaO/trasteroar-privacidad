@@ -8,7 +8,7 @@
 Apunta con el móvil al trastero y cada caja te dice lo que guarda.
 
 [![Privacidad](https://img.shields.io/badge/Pol%C3%ADtica_de_privacidad-ES%20%7C%20EN-8FB3B8)](https://rigelchuliao.github.io/trasteroar-privacidad/)
-[![Google Play](https://img.shields.io/badge/Google_Play-Descargar-00E5FF?logo=googleplay&logoColor=white)](https://play.google.com/store/apps/details?id=com.wezen.trasteroar&hl=es_419)
+[![Google Play](https://img.shields.io/badge/Google_Play-Descargar-00E5FF?logo=googleplay&logoColor=white)](https://play.google.com/store/apps/details?id=com.wezen.trasteroar)
 ![Unity](https://img.shields.io/badge/Unity_6-000000?logo=unity&logoColor=white)
 ![AR Foundation](https://img.shields.io/badge/AR_Foundation_6.6_+_ARCore-4285F4?logo=google&logoColor=white)
 ![C#](https://img.shields.io/badge/C%23-IL2CPP_ARM64-512BD4?logo=csharp&logoColor=white)
@@ -177,6 +177,6 @@ El código es privado porque la app está a la venta en Google Play. Puedo ense�
 
 **Rigel Chulia Ortega** · desarrollo, diseño de la interfaz, visión por computador y publicación.
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Rigel_Chulia_Ortega-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/rigel-chulia-ortega/) · rigelchuliawezen@gmail.com
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Rigel_Chulia_Ortega-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/rigel-chulia-ortega/) · rigelchulia@gmail.com
 
 <sub>© 2026 Rigel Chulia Ortega. Todos los derechos reservados. La política de privacidad de la app se publica desde este repositorio: <a href="https://rigelchuliao.github.io/trasteroar-privacidad/">rigelchuliao.github.io/trasteroar-privacidad</a>.</sub>
