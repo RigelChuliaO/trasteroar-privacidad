@@ -19,7 +19,7 @@ Apunta con el móvil al trastero y cada caja te dice lo que guarda.
 
 </div>
 
-> **EN ·** Trastero AR is an Android app (Unity 6 + AR Foundation/ARCore, C#) that inventories storage and moving boxes and finds them with augmented reality. Each box gets a printable label with a **custom fiducial marker** detected by my own computer-vision pipeline (pure C#, background thread), readable from **5 metres** with a 60 mm label, where ARCore image tracking failed past 60 cm. Fully offline (SQLite), with in-app purchases, backups and privacy-first crash reporting. **[Published on Google Play](https://play.google.com/store/apps/details?id=com.wezen.trasteroar).** Source code is private (available on request for interviews).
+> **EN ·** Trastero AR is an Android app (Unity 6 + AR Foundation/ARCore, C#) that inventories storage and moving boxes and finds them with augmented reality. Each box gets a printable label with a **custom fiducial marker** detected by a custom computer-vision pipeline (pure C#, background thread), readable from **5 metres** with a 60 mm label, where ARCore image tracking failed past 60 cm. Fully offline (SQLite), with in-app purchases, backups and privacy-first crash reporting. **[Published on Google Play](https://play.google.com/store/apps/details?id=com.wezen.trasteroar).** Source code is private (available on request for interviews). Built with Claude as an AI coding assistant and Google Stitch for visual design; product and technical decisions are mine.
 
 ---
 
@@ -117,7 +117,7 @@ flowchart LR
 
 ### El reto principal: reconocer cajas a 5 metros
 
-El primer prototipo usaba el *Image Tracking* de ARCore. Con una etiqueta de 68 mm **dejaba de reconocerla a ~60 cm**: inútil en un trastero de verdad. En lugar de agrandar las etiquetas, diseñé un sistema de marcadores propio y un detector desde cero.
+El primer prototipo usaba el *Image Tracking* de ARCore. Con una etiqueta de 68 mm **dejaba de reconocerla a ~60 cm**: inútil en un trastero de verdad. En lugar de agrandar las etiquetas, decidí construir un sistema de marcadores propio y un detector desde cero.
 
 <img src="docs/readme/markers.png" alt="Marcadores fiduciales: anillo negro y rejilla de 5×5 bits" width="100%">
 
@@ -169,13 +169,29 @@ No es solo un prototipo: la app está **[publicada en Google Play](https://play.
 - Firma con Play App Signing, paquete AAB y tabla de símbolos IL2CPP incluida para trazas de fallos legibles.
 - Monetización sin anuncios ni suscripciones.
 
+## Cómo lo he desarrollado
+
+Las ideas y las decisiones son mías: qué hace la app, cómo se usa, el modelo de negocio y cada cambio de rumbo
+técnico, como abandonar el *Image Tracking* de ARCore cuando vi que no pasaba de 60 cm.
+
+Me he apoyado en dos herramientas de IA:
+
+- **Claude, como asistente de programación.** Ha escrito parte del código (no todo) a partir de lo que yo le
+  pedía, me ha ayudado a resolver incompatibilidades entre las librerías de AR, y el diseño del diccionario de
+  marcadores (códigos con distancia de Hamming mínima 7) salió de una conversación con él.
+- **Stitch, de Google, para el diseño visual.** Las propuestas de colores y de estilo las genero con Stitch; la
+  interfaz la monto yo en Unity.
+
+Todo lo he probado en un móvil real antes de darlo por bueno, y puedo explicar cualquier parte del código en una
+entrevista.
+
 ## Código fuente
 
 El código es privado porque la app está a la venta en Google Play. Puedo enseñarlo y explicarlo en una entrevista técnica.
 
 ## Autor
 
-**Rigel Chulia Ortega** · desarrollo, diseño de la interfaz, visión por computador y publicación.
+**Rigel Chulia Ortega** · idea, decisiones de producto y técnicas, montaje de la interfaz, pruebas y publicación.
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Rigel_Chulia_Ortega-0A66C2?logo=linkedin&logoColor=white)](https://www.linkedin.com/in/rigel-chulia-ortega/) · rigelchulia@gmail.com
 
