@@ -19,7 +19,7 @@ Apunta con el móvil al trastero y cada caja te dice lo que guarda.
 
 </div>
 
-> **EN ·** Trastero AR is an Android app (Unity 6 + AR Foundation/ARCore, C#) that inventories storage and moving boxes and finds them with augmented reality. Each box gets a printable label with a **custom fiducial marker** detected by my own computer-vision pipeline (pure C#, background thread), readable from **5 metres** with a 60 mm label, where ARCore image tracking failed past 60 cm. Fully offline (SQLite), with in-app purchases, backups and privacy-first crash reporting. **Published on Google Play.** Source code is private (available on request for interviews).
+> **EN ·** Trastero AR is an Android app (Unity 6 + AR Foundation/ARCore, C#) that inventories storage and moving boxes and finds them with augmented reality. Each box gets a printable label with a **custom fiducial marker** detected by my own computer-vision pipeline (pure C#, background thread), readable from **5 metres** with a 60 mm label, where ARCore image tracking failed past 60 cm. Fully offline (SQLite), with in-app purchases, backups and privacy-first crash reporting. **[Published on Google Play](https://play.google.com/store/apps/details?id=com.wezen.trasteroar).** Source code is private (available on request for interviews).
 
 ---
 
@@ -162,7 +162,7 @@ Assets/_Project/
 
 ## Ciclo de producto
 
-No es solo un prototipo: la app está **publicada en Google Play** y pasó por todo el proceso real de un producto.
+No es solo un prototipo: la app está **[publicada en Google Play](https://play.google.com/store/apps/details?id=com.wezen.trasteroar)** y pasó por todo el proceso real de un producto.
 
 - Prueba cerrada en Google Play con testers reales.
 - Ficha en español e inglés, política de privacidad publicada y declaración de seguridad de datos coherente con lo que hace la app.
